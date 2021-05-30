@@ -37,6 +37,7 @@ class _CepInputFieldState extends State<CepInputField> {
           RaisedButton(
             onPressed: !cartManager.loading
                 ? () async {
+                    print("Ok");
                     //busvando a localização do usuário
                     _getLocationUser();
                     //enviando os dados

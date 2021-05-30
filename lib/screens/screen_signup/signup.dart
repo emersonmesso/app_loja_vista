@@ -117,7 +117,8 @@ class SignUpScreen extends StatelessWidget {
                                     userManager.signUp(
                                         user: user,
                                         onSuccess: () {
-                                          Navigator.of(context).pop();
+                                          Navigator.of(context)
+                                              .pushReplacementNamed('/');
                                         },
                                         onFail: (e) {
                                           scaffoldkey.currentState

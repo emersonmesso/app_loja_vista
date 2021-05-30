@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:app_loja/models/responseGeolocation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/widgets.dart';
 import 'package:geolocator/geolocator.dart';
@@ -9,7 +10,7 @@ import 'package:app_loja/models/product.dart';
 import 'package:app_loja/models/user.dart';
 import 'package:app_loja/models/user_manager.dart';
 import 'package:http/http.dart' as http;
-import 'package:app_loja/models/responseGeolocation.dart';
+import 'package:app_loja/services/cepaberto_service.dart';
 
 class CartManager extends ChangeNotifier {
   List<CartProduct> items = [];
@@ -130,30 +131,25 @@ class CartManager extends ChangeNotifier {
     loading = true;
 
     try {
-      //final cepAbertoAddress = await cepAbertoService.getAddressFromCep(cep);
+      final rest = await http.get(
+          'http://api.positionstack.com/v1/reverse?access_key=e86ea61000774a648f4e9c03e682c6d9&query=$lat,$lng');
 
-      //buscando os dados da API
-      var res = await http.get(
-          "https://maps.googleapis.com/maps/api/geocode/json?latlng=$lat,$lng&key=AIzaSyDkHXoj25Qf3Izr07pF0dfyadEDOrIsFJE");
-      if (res.statusCode == 200) {
-        ResponseGeolocator data =
-            ResponseGeolocator.fromJson(json.decode(res.body));
-        var dados = data.results[0].addressComponents;
-        print("Cidade: ${dados[3].longName}");
+      if (rest.statusCode == 200) {
+        var dados = ResponseGeolocator.fromJson(json.decode(rest.body));
+        var data = dados.data[0];
         address = Address(
-            street: dados[1].longName,
-            district: dados[2].longName,
-            zipCode: dados[6].longName,
-            city: dados[3].longName,
-            state: dados[4].longName,
-            lat: double.parse(lat),
-            long: double.parse(lng));
-
-        loading = false;
+            street: data.name,
+            district: data.street,
+            zipCode: data.postalCode,
+            city: data.county,
+            state: data.regionCode,
+            lat: data.latitude,
+            long: data.longitude);
       }
+      loading = false;
     } catch (e) {
       loading = false;
-      return Future.error('Endereço Inválido');
+      return Future.error('Localização não encontrada!');
     }
   }
 
@@ -178,6 +174,67 @@ class CartManager extends ChangeNotifier {
 
   Future<bool> calculateDelivery(double lat, double long) async {
     final DocumentSnapshot doc = await firestore.document('aux/delivery').get();
+    //buscando os valores das regiões
+    final norte = doc.data['norte'] as num;
+    final nordeste = doc.data['nordeste'] as num;
+    final centro = doc.data['centro'] as num;
+    final sudeste = doc.data['sudeste'] as num;
+    final sul = doc.data['sul'] as num;
+
+    if (address != null) {
+      final estadoUser = address.state;
+      //verificando o estado do usuário
+      switch (estadoUser) {
+        case 'RR':
+        case 'AP':
+        case 'AM':
+        case 'PA':
+        case 'AC':
+        case 'RO':
+        case 'TO':
+          print("Norte");
+          deliveryPrice = norte;
+          break;
+        case 'PE':
+        case 'MA':
+        case 'PI':
+        case 'CE':
+        case 'RN':
+        case 'PB':
+        case 'AL':
+        case 'SE':
+        case 'BA':
+          print("Nordeste");
+          deliveryPrice = nordeste;
+          break;
+        case 'MT':
+        case 'GO':
+        case 'DF':
+        case 'MS':
+          print("Centro");
+          deliveryPrice = centro;
+          break;
+        case 'SP':
+        case 'MG':
+        case 'ES':
+        case 'RJ':
+          print("Sudeste");
+          deliveryPrice = sudeste;
+          break;
+        case 'RS':
+        case 'SC':
+        case 'PR':
+          print("Sul");
+          deliveryPrice = sul;
+          break;
+        default:
+          deliveryPrice = 0;
+      }
+    } else {
+      deliveryPrice = 0;
+    }
+
+    /*
 
     final latStore = doc.data['lat'] as double;
     final longStore = doc.data['long'] as double;
@@ -189,14 +246,14 @@ class CartManager extends ChangeNotifier {
     double dis = Geolocator.distanceBetween(latStore, longStore, lat, long);
 
     dis /= 5000.0;
+    
 
-    print('Distance $dis');
+    debugPrint('Distance $dis');
 
     if (dis > maxkm) {
       return false;
     }
-
-    deliveryPrice = base + dis * km;
+    */
     return true;
   }
 }

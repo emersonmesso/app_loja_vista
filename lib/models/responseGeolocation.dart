@@ -7,24 +7,16 @@ import 'dart:convert';
 
 class ResponseGeolocator {
   ResponseGeolocator({
-    @required this.plusCode,
-    @required this.results,
-    @required this.status,
+    @required this.data,
   });
 
-  final PlusCode plusCode;
-  final List<Result> results;
-  final String status;
+  final List<Datum> data;
 
   ResponseGeolocator copyWith({
-    PlusCode plusCode,
-    List<Result> results,
-    String status,
+    List<Datum> data,
   }) =>
       ResponseGeolocator(
-        plusCode: plusCode ?? this.plusCode,
-        results: results ?? this.results,
-        status: status ?? this.status,
+        data: data ?? this.data,
       );
 
   factory ResponseGeolocator.fromRawJson(String str) =>
@@ -34,314 +26,154 @@ class ResponseGeolocator {
 
   factory ResponseGeolocator.fromJson(Map<String, dynamic> json) =>
       ResponseGeolocator(
-        plusCode: json["plus_code"] == null
+        data: json["data"] == null
             ? null
-            : PlusCode.fromJson(json["plus_code"]),
-        results: json["results"] == null
-            ? null
-            : List<Result>.from(json["results"].map((x) => Result.fromJson(x))),
-        status: json["status"] == null ? null : json["status"],
+            : List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
-        "plus_code": plusCode == null ? null : plusCode.toJson(),
-        "results": results == null
+        "data": data == null
             ? null
-            : List<dynamic>.from(results.map((x) => x.toJson())),
-        "status": status == null ? null : status,
+            : List<dynamic>.from(data.map((x) => x.toJson())),
       };
 }
 
-class PlusCode {
-  PlusCode({
-    @required this.compoundCode,
-    @required this.globalCode,
+class Datum {
+  Datum({
+    @required this.latitude,
+    @required this.longitude,
+    @required this.type,
+    @required this.distance,
+    @required this.name,
+    @required this.number,
+    @required this.postalCode,
+    @required this.street,
+    @required this.confidence,
+    @required this.region,
+    @required this.regionCode,
+    @required this.county,
+    @required this.locality,
+    @required this.administrativeArea,
+    @required this.neighbourhood,
+    @required this.country,
+    @required this.countryCode,
+    @required this.continent,
+    @required this.label,
   });
 
-  final String compoundCode;
-  final String globalCode;
+  final double latitude;
+  final double longitude;
+  final String type;
+  final double distance;
+  final String name;
+  final String number;
+  final String postalCode;
+  final String street;
+  final double confidence;
+  final String region;
+  final String regionCode;
+  final String county;
+  final String locality;
+  final String administrativeArea;
+  final dynamic neighbourhood;
+  final String country;
+  final String countryCode;
+  final String continent;
+  final String label;
 
-  PlusCode copyWith({
-    String compoundCode,
-    String globalCode,
+  Datum copyWith({
+    double latitude,
+    double longitude,
+    String type,
+    double distance,
+    String name,
+    String number,
+    String postalCode,
+    String street,
+    double confidence,
+    String region,
+    String regionCode,
+    String county,
+    String locality,
+    String administrativeArea,
+    dynamic neighbourhood,
+    String country,
+    String countryCode,
+    String continent,
+    String label,
   }) =>
-      PlusCode(
-        compoundCode: compoundCode ?? this.compoundCode,
-        globalCode: globalCode ?? this.globalCode,
+      Datum(
+        latitude: latitude ?? this.latitude,
+        longitude: longitude ?? this.longitude,
+        type: type ?? this.type,
+        distance: distance ?? this.distance,
+        name: name ?? this.name,
+        number: number ?? this.number,
+        postalCode: postalCode ?? this.postalCode,
+        street: street ?? this.street,
+        confidence: confidence ?? this.confidence,
+        region: region ?? this.region,
+        regionCode: regionCode ?? this.regionCode,
+        county: county ?? this.county,
+        locality: locality ?? this.locality,
+        administrativeArea: administrativeArea ?? this.administrativeArea,
+        neighbourhood: neighbourhood ?? this.neighbourhood,
+        country: country ?? this.country,
+        countryCode: countryCode ?? this.countryCode,
+        continent: continent ?? this.continent,
+        label: label ?? this.label,
       );
 
-  factory PlusCode.fromRawJson(String str) =>
-      PlusCode.fromJson(json.decode(str));
+  factory Datum.fromRawJson(String str) => Datum.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory PlusCode.fromJson(Map<String, dynamic> json) => PlusCode(
-        compoundCode:
-            json["compound_code"] == null ? null : json["compound_code"],
-        globalCode: json["global_code"] == null ? null : json["global_code"],
+  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+        latitude: json["latitude"] == null ? null : json["latitude"].toDouble(),
+        longitude:
+            json["longitude"] == null ? null : json["longitude"].toDouble(),
+        type: json["type"] == null ? null : json["type"],
+        distance: json["distance"] == null ? null : json["distance"].toDouble(),
+        name: json["name"] == null ? null : json["name"],
+        number: json["number"] == null ? null : json["number"],
+        postalCode: json["postal_code"] == null ? null : json["postal_code"],
+        street: json["street"] == null ? null : json["street"],
+        confidence:
+            json["confidence"] == null ? null : json["confidence"].toDouble(),
+        region: json["region"] == null ? null : json["region"],
+        regionCode: json["region_code"] == null ? null : json["region_code"],
+        county: json["county"] == null ? null : json["county"],
+        locality: json["locality"] == null ? null : json["locality"],
+        administrativeArea: json["administrative_area"] == null
+            ? null
+            : json["administrative_area"],
+        neighbourhood: json["neighbourhood"],
+        country: json["country"] == null ? null : json["country"],
+        countryCode: json["country_code"] == null ? null : json["country_code"],
+        continent: json["continent"] == null ? null : json["continent"],
+        label: json["label"] == null ? null : json["label"],
       );
 
   Map<String, dynamic> toJson() => {
-        "compound_code": compoundCode == null ? null : compoundCode,
-        "global_code": globalCode == null ? null : globalCode,
+        "latitude": latitude == null ? null : latitude,
+        "longitude": longitude == null ? null : longitude,
+        "type": type == null ? null : type,
+        "distance": distance == null ? null : distance,
+        "name": name == null ? null : name,
+        "number": number == null ? null : number,
+        "postal_code": postalCode == null ? null : postalCode,
+        "street": street == null ? null : street,
+        "confidence": confidence == null ? null : confidence,
+        "region": region == null ? null : region,
+        "region_code": regionCode == null ? null : regionCode,
+        "county": county == null ? null : county,
+        "locality": locality == null ? null : locality,
+        "administrative_area":
+            administrativeArea == null ? null : administrativeArea,
+        "neighbourhood": neighbourhood,
+        "country": country == null ? null : country,
+        "country_code": countryCode == null ? null : countryCode,
+        "continent": continent == null ? null : continent,
+        "label": label == null ? null : label,
       };
-}
-
-class Result {
-  Result({
-    @required this.addressComponents,
-    @required this.formattedAddress,
-    @required this.geometry,
-    @required this.placeId,
-    @required this.plusCode,
-    @required this.types,
-  });
-
-  final List<AddressComponent> addressComponents;
-  final String formattedAddress;
-  final Geometry geometry;
-  final String placeId;
-  final PlusCode plusCode;
-  final List<String> types;
-
-  Result copyWith({
-    List<AddressComponent> addressComponents,
-    String formattedAddress,
-    Geometry geometry,
-    String placeId,
-    PlusCode plusCode,
-    List<String> types,
-  }) =>
-      Result(
-        addressComponents: addressComponents ?? this.addressComponents,
-        formattedAddress: formattedAddress ?? this.formattedAddress,
-        geometry: geometry ?? this.geometry,
-        placeId: placeId ?? this.placeId,
-        plusCode: plusCode ?? this.plusCode,
-        types: types ?? this.types,
-      );
-
-  factory Result.fromRawJson(String str) => Result.fromJson(json.decode(str));
-
-  String toRawJson() => json.encode(toJson());
-
-  factory Result.fromJson(Map<String, dynamic> json) => Result(
-        addressComponents: json["address_components"] == null
-            ? null
-            : List<AddressComponent>.from(json["address_components"]
-                .map((x) => AddressComponent.fromJson(x))),
-        formattedAddress: json["formatted_address"] == null
-            ? null
-            : json["formatted_address"],
-        geometry: json["geometry"] == null
-            ? null
-            : Geometry.fromJson(json["geometry"]),
-        placeId: json["place_id"] == null ? null : json["place_id"],
-        plusCode: json["plus_code"] == null
-            ? null
-            : PlusCode.fromJson(json["plus_code"]),
-        types: json["types"] == null
-            ? null
-            : List<String>.from(json["types"].map((x) => x)),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "address_components": addressComponents == null
-            ? null
-            : List<dynamic>.from(addressComponents.map((x) => x.toJson())),
-        "formatted_address": formattedAddress == null ? null : formattedAddress,
-        "geometry": geometry == null ? null : geometry.toJson(),
-        "place_id": placeId == null ? null : placeId,
-        "plus_code": plusCode == null ? null : plusCode.toJson(),
-        "types": types == null ? null : List<dynamic>.from(types.map((x) => x)),
-      };
-}
-
-class AddressComponent {
-  AddressComponent({
-    @required this.longName,
-    @required this.shortName,
-    @required this.types,
-  });
-
-  final String longName;
-  final String shortName;
-  final List<String> types;
-
-  AddressComponent copyWith({
-    String longName,
-    String shortName,
-    List<String> types,
-  }) =>
-      AddressComponent(
-        longName: longName ?? this.longName,
-        shortName: shortName ?? this.shortName,
-        types: types ?? this.types,
-      );
-
-  factory AddressComponent.fromRawJson(String str) =>
-      AddressComponent.fromJson(json.decode(str));
-
-  String toRawJson() => json.encode(toJson());
-
-  factory AddressComponent.fromJson(Map<String, dynamic> json) =>
-      AddressComponent(
-        longName: json["long_name"] == null ? null : json["long_name"],
-        shortName: json["short_name"] == null ? null : json["short_name"],
-        types: json["types"] == null
-            ? null
-            : List<String>.from(json["types"].map((x) => x)),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "long_name": longName == null ? null : longName,
-        "short_name": shortName == null ? null : shortName,
-        "types": types == null ? null : List<dynamic>.from(types.map((x) => x)),
-      };
-}
-
-class Geometry {
-  Geometry({
-    @required this.location,
-    @required this.locationType,
-    @required this.viewport,
-    @required this.bounds,
-  });
-
-  final Location location;
-  final LocationType locationType;
-  final Bounds viewport;
-  final Bounds bounds;
-
-  Geometry copyWith({
-    Location location,
-    LocationType locationType,
-    Bounds viewport,
-    Bounds bounds,
-  }) =>
-      Geometry(
-        location: location ?? this.location,
-        locationType: locationType ?? this.locationType,
-        viewport: viewport ?? this.viewport,
-        bounds: bounds ?? this.bounds,
-      );
-
-  factory Geometry.fromRawJson(String str) =>
-      Geometry.fromJson(json.decode(str));
-
-  String toRawJson() => json.encode(toJson());
-
-  factory Geometry.fromJson(Map<String, dynamic> json) => Geometry(
-        location: json["location"] == null
-            ? null
-            : Location.fromJson(json["location"]),
-        locationType: json["location_type"] == null
-            ? null
-            : locationTypeValues.map[json["location_type"]],
-        viewport:
-            json["viewport"] == null ? null : Bounds.fromJson(json["viewport"]),
-        bounds: json["bounds"] == null ? null : Bounds.fromJson(json["bounds"]),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "location": location == null ? null : location.toJson(),
-        "location_type": locationType == null
-            ? null
-            : locationTypeValues.reverse[locationType],
-        "viewport": viewport == null ? null : viewport.toJson(),
-        "bounds": bounds == null ? null : bounds.toJson(),
-      };
-}
-
-class Bounds {
-  Bounds({
-    @required this.northeast,
-    @required this.southwest,
-  });
-
-  final Location northeast;
-  final Location southwest;
-
-  Bounds copyWith({
-    Location northeast,
-    Location southwest,
-  }) =>
-      Bounds(
-        northeast: northeast ?? this.northeast,
-        southwest: southwest ?? this.southwest,
-      );
-
-  factory Bounds.fromRawJson(String str) => Bounds.fromJson(json.decode(str));
-
-  String toRawJson() => json.encode(toJson());
-
-  factory Bounds.fromJson(Map<String, dynamic> json) => Bounds(
-        northeast: json["northeast"] == null
-            ? null
-            : Location.fromJson(json["northeast"]),
-        southwest: json["southwest"] == null
-            ? null
-            : Location.fromJson(json["southwest"]),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "northeast": northeast == null ? null : northeast.toJson(),
-        "southwest": southwest == null ? null : southwest.toJson(),
-      };
-}
-
-class Location {
-  Location({
-    @required this.lat,
-    @required this.lng,
-  });
-
-  final double lat;
-  final double lng;
-
-  Location copyWith({
-    double lat,
-    double lng,
-  }) =>
-      Location(
-        lat: lat ?? this.lat,
-        lng: lng ?? this.lng,
-      );
-
-  factory Location.fromRawJson(String str) =>
-      Location.fromJson(json.decode(str));
-
-  String toRawJson() => json.encode(toJson());
-
-  factory Location.fromJson(Map<String, dynamic> json) => Location(
-        lat: json["lat"] == null ? null : json["lat"].toDouble(),
-        lng: json["lng"] == null ? null : json["lng"].toDouble(),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "lat": lat == null ? null : lat,
-        "lng": lng == null ? null : lng,
-      };
-}
-
-enum LocationType { ROOFTOP, GEOMETRIC_CENTER, APPROXIMATE }
-
-final locationTypeValues = EnumValues({
-  "APPROXIMATE": LocationType.APPROXIMATE,
-  "GEOMETRIC_CENTER": LocationType.GEOMETRIC_CENTER,
-  "ROOFTOP": LocationType.ROOFTOP
-});
-
-class EnumValues<T> {
-  Map<String, T> map;
-  Map<T, String> reverseMap;
-
-  EnumValues(this.map);
-
-  Map<T, String> get reverse {
-    if (reverseMap == null) {
-      reverseMap = map.map((k, v) => new MapEntry(v, k));
-    }
-    return reverseMap;
-  }
 }

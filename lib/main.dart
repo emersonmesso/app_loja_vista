@@ -1,5 +1,4 @@
 import 'package:cloud_functions/cloud_functions.dart';
-import 'package:correios_frete/correios_frete.dart';
 import 'package:flutter/material.dart';
 import 'package:app_loja/models/admin_orders_manager.dart';
 import 'package:app_loja/models/admin_users.dart';
