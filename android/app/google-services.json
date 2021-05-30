@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "895309734133",
+    "firebase_url": "https://app-loja-d861f-default-rtdb.firebaseio.com",
+    "project_id": "app-loja-d861f",
+    "storage_bucket": "app-loja-d861f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:895309734133:android:6e77d599c548b90d2365bc",
+        "android_client_info": {
+          "package_name": "com.vista.app_loja"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "895309734133-hrukg7v2hvgrkjlhov3h4vtd72hs4g5u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDkHXoj25Qf3Izr07pF0dfyadEDOrIsFJE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "895309734133-hrukg7v2hvgrkjlhov3h4vtd72hs4g5u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
